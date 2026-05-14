@@ -1,12 +1,11 @@
-from dataclasses import field
+import sys
 
 import pygame
-from constants import PLAYER_RADIUS, SCREEN_HEIGHT, SCREEN_WIDTH, LINE_WIDTH, PLAYER_TURN_SPEED
-from logger import log_state
-from player import Player
-from asteroid import Asteroid 
+from asteroid import Asteroid
 from asteroidfield import AsteroidField
-import player
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_RADIUS, LINE_WIDTH, PLAYER_SPEED, PLAYER_TURN_SPEED
+from logger import log_event, log_state
+from player import Player
 
 
 def main():
@@ -44,7 +43,16 @@ def main():
                 return
             
         updatable.update(dt)
-                
+
+        for asteroid in asteroids:
+            #print(f"{player.collides_with(asteroid)}")
+            if player.collides_with(asteroid):
+                log_event("player_hit")
+                print("Game Over!")
+                sys.exit()
+                return
+
+
         screen.fill("black")
 
         for object in drawable:
